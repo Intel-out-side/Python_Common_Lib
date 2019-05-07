@@ -24,20 +24,20 @@ class Sigma_2sample:
         :return:
         """
 
-        V1 = np.var(self.data1, ddof=1)
-        V2 = np.var(self.data2, ddof=1)
+        V1 = np.var(self.data1, ddof=1)  # unbiased variance
+        V2 = np.var(self.data2, ddof=1)  # unbiased variance
         print("V1:", V1, " V2: ", V2)
         F_0 = V1 / V2
         print("F_0: ", F_0)
 
-        rv = f(dfn=self.dfnum, dfd=self.dfden)
+        rv = f(dfn=self.dfnum, dfd=self.dfden)  # F distribution for df1, df2
 
         # mode1: two-sided test
         # mode2: one-sided test
 
         if mode == 1:
-            R_right = rv.isf(self.alpha/2)
-            R_left = rv.isf(1-self.alpha/2)
+            R_right = rv.isf(self.alpha/2)  #F(df1, df2; a/2)
+            R_left = rv.isf(1-self.alpha/2)  #F(df1, df2; 1-a/2)
             print("R_left: ", R_left)
             print("R_right: ", R_right)
 
@@ -65,6 +65,7 @@ class Sigma_2sample:
                 print("Ho not rejected")
 
     def statistic_power(self, delta=0.5, mode=1):
+        # F(df1, df2, 1-P) = 1/F(df2, df1, P)
         rv1 = f(dfn=self.dfnum, dfd=self.dfden)
         rv2 = f(dfn=self.dfden, dfd=self.dfnum)
         if mode == 1:
